@@ -5,11 +5,10 @@ pipeline {
         DOCKER_IMAGE = "myapp"
         EC2_IP = "18.234.35.231"
         EC2_USER = "ec2-user"
-        // Update this path to where your private SSH key actually is on your Windows machine
         SSH_KEY = "C:/Users/USER/.ssh/jenkins_id_rsa"
-        // Path to bash.exe from Git for Windows
-        BASH_PATH = "C:/Program Files/Git/usr/bin/bash.exe"
+        BASH_PATH = "C:/Program Files/Git/bin/bash.exe"
     }
+
 
     stages {
         stage('Clone Repository') {
@@ -20,13 +19,12 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // Run docker build with Git Bash shell
-                // Use triple quotes for multiline, and ${} for variable interpolation in Groovy
-                powershell(script: """
+                powershell """
                     & '${BASH_PATH}' -c 'docker build -t ${DOCKER_IMAGE} .'
-                """)
+                """
             }
         }
+
 
         stage('Deploy to EC2') {
             steps {
